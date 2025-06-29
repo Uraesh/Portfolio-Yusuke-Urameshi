@@ -1,0 +1,772 @@
+/* 
+ * ===========================================
+ * 1. RESET ET STYLES DE BASE
+ * ===========================================
+ * Réinitialisation des marges et paddings par défaut
+ * pour assurer une base cohérente entre les navigateurs.
+ * La propriété box-sizing: border-box inclut le padding et la bordure
+ * dans la largeur et la hauteur de l'élément.
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
+ * ===========================================
+ * 2. VARIABLES CSS PERSONNALISÉES
+ * ===========================================
+ * Définition des couleurs et valeurs réutilisables
+ * pour maintenir une cohérence dans tout le site.
+ */
+:root {
+    --neon-green: #00ffaa;  /* Couleur verte néon pour les éléments d'accentuation */
+    --purple: #6e00ff;      /* Couleur violette pour les dégradés et effets */
+    --pink: #ff3366;        /* Couleur rose pour les effets et accents */
+    --dark: #0a0a0a;        /* Couleur de fond principale très sombre */
+    --darker: #050505;      /* Couleur de fond secondaire encore plus sombre */
+}
+
+/* 
+ * ===========================================
+ * 3. STYLES DE BASE DU CORPS
+ * ===========================================
+ * Styles généraux appliqués à l'ensemble du document.
+ * Le curseur est masqué pour être remplacé par un curseur personnalisé.
+ */
+body {
+    font-family: 'Courier New', monospace;  /* Police à chasse fixe pour un look technique */
+    background: var(--dark);                /* Fond sombre par défaut */
+    color: white;                          /* Texte blanc pour contraster avec le fond sombre */
+    overflow-x: hidden;                    /* Empêche le défilement horizontal */
+    cursor: none;                          /* Cache le curseur par défaut */
+}
+
+/* Curseur personnalisé */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease;
+}
+
+.cursor-trail {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--pink);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.7;
+}
+
+/* 
+ * ===========================================
+ * 4. ÉCRAN DE CHARGEMENT
+ * ===========================================
+ * Écran de chargement qui s'affiche avant le contenu principal.
+ */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--darker);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease;
+}
+
+.loader-text {
+    font-size: 2rem;
+    color: var(--neon-green);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.loader-bar {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.loader-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-green), var(--purple), var(--pink));
+    width: 0%;
+    animation: loading 3s ease-in-out forwards;
+}
+
+@keyframes loading {
+    to { width: 100%; }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px var(--neon-green); }
+    to { text-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green); }
+}
+
+/* 
+ * ===========================================
+ * 5. GRILLE DE FOND 3D
+ * ===========================================
+ * Grille de fond qui donne un effet 3D.
+ */
+.bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 170, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 170, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    z-index: -2;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* 
+ * ===========================================
+ * 6. PARTICULES FLOTTANTES
+ * ===========================================
+ * Particules qui flottent dans l'arrière-plan.
+ */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--neon-green);
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* 
+ * ===========================================
+ * 7. NAVIGATION
+ * ===========================================
+ * Navigation principale du site.
+ */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 50px;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-green), var(--purple));
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+nav a:hover::before {
+    left: 0;
+}
+
+nav a:hover {
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* 
+ * ===========================================
+ * 8. SECTION HERO
+ * ===========================================
+ * Section d'accueil avec un effet de glitch.
+ */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 2;
+}
+
+.glitch {
+    font-size: 4rem;
+    font-weight: bold;
+    position: relative;
+    color: var(--neon-green);
+    animation: glitch 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    animation: glitch-1 2s infinite;
+    color: var(--pink);
+    z-index: -1;
+}
+
+.glitch::after {
+    animation: glitch-2 2s infinite;
+    color: var(--purple);
+    z-index: -2;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-1 {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(2px, -2px); }
+    40% { transform: translate(-2px, 2px); }
+    60% { transform: translate(-2px, -2px); }
+    80% { transform: translate(2px, 2px); }
+}
+
+@keyframes glitch-2 {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, -2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(-2px, 2px); }
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    background: linear-gradient(45deg, var(--neon-green), var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 3s ease-in-out infinite;
+}
+
+@keyframes rainbow {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(180deg); }
+}
+
+/* 
+ * ===========================================
+ * 9. TERMINAL EFFECT
+ * ===========================================
+ * Effet de terminal pour la section de contact.
+ */
+.terminal {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--neon-green);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+    font-family: 'Courier New', monospace;
+    max-width: 600px;
+}
+
+.terminal-header {
+    color: var(--neon-green);
+    margin-bottom: 10px;
+}
+
+.typing-animation {
+    color: white;
+    border-right: 2px solid var(--neon-green);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { border-color: var(--neon-green); }
+    51%, 100% { border-color: transparent; }
+}
+
+/* 
+ * ===========================================
+ * 12. SECTIONS GÉNÉRIQUES
+ * ===========================================
+ * Styles de base pour toutes les sections de la page
+ */
+section {
+    padding: 100px 50px;      /* Grand espacement vertical, espacement latéral réduit sur mobile */
+    max-width: 1200px;        /* Largeur maximale pour une lecture confortable */
+    margin: 0 auto;           /* Centrage horizontal */
+    position: relative;       /* Contexte de positionnement pour les éléments enfants */
+}
+
+/* 
+ * Titre de section stylisé avec dégradé
+ * Utilise des préfixes vendeurs pour une meilleure compatibilité
+ */
+.section-title {
+    font-size: 3rem;           /* Taille de police importante pour le titre */
+    text-align: center;        /* Centrage du texte */
+    margin-bottom: 50px;       /* Grand espacement en dessous */
+    background: linear-gradient(45deg, var(--neon-green), var(--purple)); /* Dégradé de couleurs */
+    -webkit-background-clip: text;  /* Compatibilité avec WebKit/Blink */
+    -webkit-text-fill-color: transparent; /* Rendre le texte transparent pour voir le dégradé */
+    background-clip: text;          /* Standard moderne */
+    display: inline-block;          /* Nécessaire pour le dégradé de texte */
+    position: relative;             /* Pour les pseudo-éléments */
+}
+
+/* 
+ * ===========================================
+ * 13. GRILLE DE PROJETS
+ * ===========================================
+ * Mise en page responsive pour la galerie de projets
+ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;  /* Une colonne par défaut sur mobile */
+    gap: 30px;                   /* Espacement entre les cartes */
+    margin-top: 50px;            /* Espacement depuis le titre */
+}
+
+/* 
+ * Adaptation pour les écrans plus larges
+ * Crée un nombre automatique de colonnes avec une largeur minimale de 300px
+ */
+@media (min-width: 768px) {
+    .projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+/* 
+ * Carte de projet individuelle
+ * Style 3D avec effets de survol avancés
+ */
+.project-card {
+    background: linear-gradient(135deg, rgba(0, 255, 170, 0.1), rgba(110, 0, 255, 0.1));
+    border: 1px solid var(--neon-green);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;  /* Transition fluide pour les effets */
+    transform-style: preserve-3d; /* Important pour les transformations 3D */
+    position: relative;
+    overflow: hidden;           /* Cache le débordement des éléments enfants */
+    backdrop-filter: blur(5px); /* Effet de flou pour un look moderne */
+}
+
+/* 
+ * Arrière-plan en dégradé qui apparaît au survol
+ * Positionné en arrière-plan avec z-index négatif
+ */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--neon-green), var(--purple), var(--pink));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;  /* Place l'arrière-plan derrière le contenu */
+}
+
+/* 
+ * Effet 3D au survol de la carte
+ * Légère rotation et élévation pour un effet de profondeur
+ */
+.project-card:hover {
+    transform: rotateX(10deg) rotateY(10deg) translateZ(20px);
+    box-shadow: 0 20px 40px rgba(0, 255, 170, 0.3);
+}
+
+/* 
+ * Fait apparaître l'arrière-plan en dégradé au survol
+ */
+.project-card:hover::before {
+    opacity: 0.1;
+}
+
+/* 
+ * Titre du projet
+ * Style distinctif avec couleur néon
+ */
+.project-title {
+    font-size: 1.5rem;
+    color: var(--neon-green);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+/* 
+ * Conteneur pour les technologies utilisées dans le projet
+ * Affiche les technologies sous forme de badges
+ */
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;  /* Permet le retour à la ligne si nécessaire */
+    gap: 10px;        /* Espacement entre les badges */
+    margin: 15px 0;   /* Marge verticale */
+}
+
+/* 
+ * Badge de technologie
+ * Style arrondi avec dégradé de couleur
+ */
+.tech-tag {
+    background: linear-gradient(45deg, var(--purple), var(--pink));
+    padding: 5px 12px;
+    border-radius: 20px;  /* Coins très arrondis pour un effet de badge */
+    font-size: 0.8rem;
+    color: white;         /* Texte blanc pour contraster avec le fond coloré */
+    font-weight: 500;     /* Légèrement en gras pour une meilleure lisibilité */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre portée pour le relief */
+}
+
+/* 
+ * ===========================================
+ * 14. COMPÉTENCES ET BARRES DE PROGRESSION
+ * ===========================================
+ * Styles pour la section des compétences avec barres de progression animées
+ */
+
+/* 
+ * Grille de compétences
+ * Layout responsive qui s'adapte à la largeur de l'écran
+ */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;           /* Espacement entre les colonnes */
+    margin-top: 50px;    /* Espacement depuis le titre de section */
+}
+
+/* 
+ * Conteneur d'une compétence individuelle
+ * Contient le nom, le pourcentage et la barre de progression
+ */
+.skill-item {
+    margin-bottom: 25px;  /* Espacement entre les compétences */
+}
+
+/* 
+ * Ligne du nom de la compétence et du pourcentage
+ * Utilise flexbox pour aligner les éléments de chaque côté
+ */
+.skill-name {
+    display: flex;
+    justify-content: space-between;  /* Nom à gauche, pourcentage à droite */
+    margin-bottom: 10px;            /* Espacement avant la barre de progression */
+    font-size: 1rem;                /* Taille de police lisible */
+}
+
+/* 
+ * Conteneur de la barre de progression
+ * Crée un fond pour la barre de progression
+ */
+.skill-bar {
+    height: 8px;                    /* Hauteur de la barre */
+    background: rgba(255, 255, 255, 0.1);  /* Couleur de fond subtile */
+    border-radius: 10px;            /* Coins arrondis */
+    overflow: hidden;               /* Cache le débordement de la barre de progression */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Ombre intérieure pour le relief */
+}
+
+/* 
+ * Barre de progression elle-même
+ * A une largeur initiale de 0% qui est modifiée par JavaScript
+ */
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-green), var(--purple)); /* Dégradé de couleur */
+    border-radius: 10px;            /* Coins arrondis identiques au conteneur */
+    width: 0%;                      /* Défini dynamiquement par JavaScript */
+    transition: width 1.5s ease-out; /* Animation fluide de la largeur */
+    position: relative;             /* Pour positionner l'effet de brillance */
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.3); /* Lueur subtile */
+}
+
+/* 
+ * Effet de brillance animé sur la barre de progression
+ * Crée un effet de lumière qui se déplace
+ */
+.skill-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent); /* Dégradé de transparence */
+    animation: shimmer 2s infinite;  /* Animation en boucle */
+    transform: translateX(-100%);    /* Position initiale hors de la vue */
+}
+
+/* 
+ * Animation de la brillance
+ * Fait glisser l'effet de brillance de gauche à droite
+ */
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }  /* Commence à gauche (hors de la vue) */
+    100% { transform: translateX(100%); } /* Termine à droite (hors de la vue) */
+}
+
+/* 
+ * ===========================================
+ * 15. FORMULAIRE DE CONTACT
+ * ===========================================
+ * Styles pour le formulaire de contact avec effets de survol
+ */
+
+/* Conteneur principal du formulaire */
+.contact-form {
+    max-width: 600px;           /* Largeur maximale pour une bonne lisibilité */
+    margin: 0 auto;             /* Centrage horizontal */
+    padding: 30px;              /* Espacement intérieur */
+    background: rgba(0, 0, 0, 0.3); /* Fond légèrement transparent */
+    border-radius: 15px;        /* Coins arrondis */
+    border: 1px solid rgba(0, 255, 170, 0.2); /* Bordure subtile */
+    backdrop-filter: blur(10px); /* Effet de flou pour le verre dépoli */
+}
+
+/* Groupe de champs du formulaire */
+.form-group {
+    margin-bottom: 25px;        /* Espacement entre les champs */
+    position: relative;         /* Pour les éléments positionnés absolument */
+}
+
+/* Styles communs pour les champs de texte et les zones de texte */
+.form-group input,
+.form-group textarea {
+    width: 100%;                /* Pleine largeur */
+    padding: 15px;              /* Espacement intérieur */
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    border: 1px solid var(--neon-green); /* Bordure verte néon */
+    border-radius: 10px;        /* Coins arrondis */
+    color: white;               /* Texte blanc */
+    font-family: inherit;       /* Hérite de la police du corps */
+    font-size: 1rem;            /* Taille de police lisible */
+    transition: all 0.3s ease;  /* Transition fluide pour les effets */
+}
+
+/* Zone de texte spécifique */
+.form-group textarea {
+    min-height: 150px;          /* Hauteur minimale */
+    resize: vertical;           /* Redimensionnement vertical uniquement */
+}
+
+/* États de focus pour les champs */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;              /* Supprime la bordure de focus par défaut */
+    box-shadow: 0 0 15px var(--neon-green); /* Lueur verte au focus */
+    border-color: var(--pink);   /* Changement de couleur de bordure */
+}
+
+/* Bouton de soumission */
+.btn {
+    background: linear-gradient(45deg, var(--neon-green), var(--purple));
+    border: none;               /* Pas de bordure */
+    padding: 15px 30px;         /* Taille du bouton */
+    border-radius: 25px;        /* Coins très arrondis */
+    color: white;               /* Texte blanc */
+    font-weight: bold;          /* Texte en gras */
+    cursor: pointer;            /* Curseur de type pointeur */
+    transition: all 0.3s ease;  /* Transition fluide */
+    position: relative;         /* Pour le positionnement absolu du pseudo-élément */
+    overflow: hidden;           /* Cache le débordement du pseudo-élément */
+    display: inline-block;      /* Pour une meilleure gestion des marges */
+    font-size: 1rem;            /* Taille de police cohérente */
+    text-transform: uppercase;  /* Texte en majuscules */
+    letter-spacing: 1px;        /* Espacement des lettres */
+}
+
+/* Effet de brillance au survol */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;                /* Commence hors de la vue à gauche */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent); /* Dégradé de brillance */
+    transition: left 0.5s ease;  /* Animation de déplacement */
+}
+
+/* Animation de la brillance au survol */
+.btn:hover::before {
+    left: 100%;                 /* Termine hors de la vue à droite */
+}
+
+/* Effet de survol du bouton */
+.btn:hover {
+    transform: translateY(-2px); /* Légère élévation */
+    box-shadow: 0 10px 20px rgba(0, 255, 170, 0.3); /* Ombre portée */
+    filter: brightness(1.1);    /* Légère augmentation de la luminosité */
+}
+
+/* 
+ * ===========================================
+ * 16. ANIMATIONS DE RÉVÉLATION
+ * ===========================================
+ * Effets d'animation pour le défilement de la page
+ */
+
+/* État initial des éléments à révéler */
+.reveal {
+    opacity: 0;                     /* Invisible par défaut */
+    transform: translateY(50px);    /* Décalé vers le bas */
+    transition: all 0.6s ease;      /* Transition fluide */
+}
+
+/* État actif lorsque l'élément est dans la vue */
+.reveal.active {
+    opacity: 1;                     /* Devenu visible */
+    transform: translateY(0);       /* Retour à la position normale */
+}
+
+/* 
+ * ===========================================
+ * 17. MÉDIAS QUERIES - DESIGN RESPONSIVE
+ * ===========================================
+ * Adaptations pour différentes tailles d'écran
+ */
+
+/* Pour les écrans jusqu'à 768px de large */
+@media (max-width: 768px) {
+    /* Réduction de la taille du texte glitch */
+    .glitch {
+        font-size: 2.5rem;
+    }
+    
+    /* Ajustement de la navigation */
+    nav {
+        padding: 15px 20px;          /* Réduction des marges */
+    }
+    
+    /* Passage en colonne pour les liens de navigation */
+    nav ul {
+        flex-direction: column;      /* Empilement vertical */
+        gap: 15px;                   /* Espacement entre les éléments */
+        text-align: center;          /* Centrage du texte */
+    }
+    
+    /* Ajustement des marges des sections */
+    section {
+        padding: 50px 20px;          /* Réduction des marges latérales */
+    }
+    
+    /* Ajustement de la taille de police pour les titres de section */
+    .section-title {
+        font-size: 2.2rem;           /* Taille réduite pour mobile */
+    }
+    
+    /* Ajustement du formulaire de contact */
+    .contact-form {
+        padding: 20px 15px;          /* Réduction des marges intérieures */
+    }
+    
+    /* Ajustement des cartes de projet */
+    .project-card {
+        padding: 20px;               /* Réduction du padding */
+    }
+    
+    /* Ajustement de la taille de police pour les titres de projet */
+    .project-title {
+        font-size: 1.3rem;           /* Taille réduite pour mobile */
+    }
+}
+
+/* Pour les très petits écrans (moins de 480px) */
+@media (max-width: 480px) {
+    /* Réduction supplémentaire de la taille du texte glitch */
+    .glitch {
+        font-size: 2rem;
+    }
+    
+    /* Réduction de la taille de police pour les titres de section */
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    /* Ajustement du terminal */
+    .terminal {
+        padding: 15px;               /* Réduction du padding */
+        margin: 20px 0;              /* Réduction des marges */
+    }
+    
+    /* Ajustement du bouton */
+    .btn {
+        width: 100%;                /* Pleine largeur */
+        padding: 12px;              /* Ajustement du padding */
+    }
+}
